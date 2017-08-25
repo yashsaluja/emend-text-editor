@@ -42,3 +42,11 @@ DISABLING RAW MODE AT THE EXIT OF THE FUNCTION:
 --atexit() is there in stdlib.h file. It is used to register disableRawMode() function too be called automatically when the program exits() function from main() or using exit(). Leftover inputs are no longer fed into the input shell because TCSAFUSH option is no longer being passed in tcsetattr() when the program exits.
 
 TURNING OFF CANONICAL MODE IN TERMINAL
+
+--ICANON turns off canonical mode, Which allows us to read the text byte by byte instead of line by line. It is a local flag. Program will exit as soon as 'q' is entered.
+
+DISPLAYING THE KEYPRESSES TO SHOW THE ASCII VALUES OF EDITOR
+
+--To get an idea, let's print out each byte by byte character that we enter with their ASCII values.
+
+--iscntrl() is from ctype.h and printf() from stdio.h. iscntrl() tests a character if it is a control character or not. cntrl characters are non-printable characters that we don't want to print. ASCII codes 32-126 are all printable/displayable.
