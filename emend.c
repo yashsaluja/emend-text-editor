@@ -1,11 +1,20 @@
+#include<stdlib.h>
 #include<unistd.h>
 #include<termios.h>
 
-void enableRawMode() {
-    // struct termios, tcgetattr(), tcsetattr(), ECHO, and TCSAFLUSH all come from <termios.h>.
-    struct termios raw;
+struct termios orig_termios;
+void disableRawMode() 
+{
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
+}
 
-    tcgetattr(STDIN_FILENO, &raw);
+void enableRawMode() 
+{
+    // struct termios, tcgetattr(), tcsetattr(), ECHO, and TCSAFLUSH all come from <termios.h>.
+    tcgetattr(STDIN_FILENO, &orig_termios);
+    atexit(disableRawMode);
+
+    struct termios raw = orig_termios;
 
     raw.c_lflag &= !(ECHO);
 
