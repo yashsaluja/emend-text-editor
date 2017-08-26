@@ -49,4 +49,13 @@ DISPLAYING THE KEYPRESSES TO SHOW THE ASCII VALUES OF EDITOR
 
 --To get an idea, let's print out each byte by byte character that we enter with their ASCII values.
 
---iscntrl() is from ctype.h and printf() from stdio.h. iscntrl() tests a character if it is a control character or not. cntrl characters are non-printable characters that we don't want to print. ASCII codes 32-126 are all printable/displayable.
+--iscntrl() is from ctype.h and printf() from stdio.h. iscntrl() tests a character if it is a control character or not. cntrl characters are non-printable characters that we don't want to print. ASCII codes 32-126 are all printable/displayable. in printf() %d puts the ASCII code and %c emits out its character as it is.
+
+--This program(temporarily) shows how various keypresses translate into bytes that we read. Take a look at Escape , Pageup, up, down, left, right etc keys. Arrow keys and pageup, pagedown, home and end are 3 or 4 bytes to the terminal. these are known as escape sequences.
+--Backspace is 127 bytes. Delete is 4-byte escape sequence.
+--Enter is 10 bytes. Which is a newline character alse called '\n'
+--Ctrl-a is 1 byte, ctrl-b is 2 byte, ctrl-c is escape sequence which terminates the program.
+
+--If you type ctrl+s you signal the terminal to stop sendint the output, to set everything back to normal...Hit ctrl+q to tell it to resume sending your output.
+
+--If you press ctrl+z or ctrl+y, the programs seems to be frozen and that is because it goes in the background. To bring it back to the foreground hit 'fg' It may exit as a result of read() returning -1 t indicate error occured. It may happen on windows, but not on linux.
