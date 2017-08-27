@@ -59,3 +59,37 @@ DISPLAYING THE KEYPRESSES TO SHOW THE ASCII VALUES OF EDITOR
 --If you type ctrl+s you signal the terminal to stop sendint the output, to set everything back to normal...Hit ctrl+q to tell it to resume sending your output.
 
 --If you press ctrl+z or ctrl+y, the programs seems to be frozen and that is because it goes in the background. To bring it back to the foreground hit 'fg' It may exit as a result of read() returning -1 t indicate error occured. It may happen on windows, but not on linux.
+
+DISABLING CTRL+C AND CTRL+Z SIGNALS:
+
+--Ctrlc sends sigint signal to the current process which causes it to terminate. Ctrl+z sends a sigtstp signal to the current process which causes it to suspend. ISIG turns them both off. ISIG comes from termios.h
+
+DISBLING CTRL+S AND CTRL+Q 
+
+-- By default, both are software flow control. ctrl+s stops data from being transmitted to the terminal until you press ctrl+q. We turn off this feature.
+
+--IXON comes from termios.h. I stands for input flag, and XON controls ctrl+s and ctrl+q. XOFF is to pause transmission and XON is to resume transmission.
+
+DISABLING CTRL+V FEATURE:
+
+-- To disable ctrl+v we use IEXTEN flag in raw.c_lflag. It comes from termios.h. It is another flag that starts with I but belongs in the c_lflag field.
+
+FIXING Ctrl+M ISSUE:
+
+-- If we run the program now, You'll see that ctrl+M is weird. We expect it to be read as 10 but it is being read as 13. To fix this we use ICRNL flag which comes from termios.h. I stands for input flag. CR stands for carriage return and NL stands for newline. Now ctrl+M will be read as 13(carriage return) and the same goes for the enter key.
+
+TURNING OFF ALL OUTPUT PROCESSING:
+
+--Terminal translates each newline we print into a carriage return followed by a newline. Carriage return moves the cursor back to the beginning of the current line, and the newline moves the cursor down a line, scrolling the screen if necessary. We turn this feature off all output processing features by turning off the OPOST flag. 
+--OPOST comes from termios.h > O is for output flag and POST stands for Post-Processing Of Output. Here occurs a problem. If we run the program at this point, the newline is there but it is not shifting to the left side of the terminal. To fix this let's add carruage return to our printf() statements.From now on, we’ll have to write out the full "\r\n" whenever we want to start a new line.
+
+--We turn off some more miscellaneous flags.
+
+A TIMEOUT FOR READ() FUNCTION:
+
+--Read() currently waits indefinitely for input from the keyboard. We can set a timeout so that read() returns if it doesn't get any input for a certain amount of time.
+
+--VMIN and VTIME come from termios.h. They play as an index to the c_cc field which stands for control characters. There is not much effect on BASH on windows. But plays a significant role in Ubuntu linux.
+
+ERROR HANDLING IN THE TEXT EDITOR:
+
